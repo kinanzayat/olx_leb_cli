@@ -2,12 +2,13 @@
   "name": "olx-leb",
   "version": "1.0.0",
   "description": "CLI for browsing OLX Lebanon listings - optimized for AI agents",
-  "main": "index.js",
+  "type": "module",
+  "main": "lib/olx.js",
   "bin": {
     "olx": "./bin/olx.js"
   },
   "scripts": {
-    "test": "node bin/olx.js search iphone --limit 5"
+    "test": "node --test"
   },
   "keywords": ["olx", "lebanon", "cli", "classifieds", "ai-agent"],
   "author": "Kinan Zayat",

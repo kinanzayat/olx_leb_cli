@@ -73,13 +73,13 @@ olx search "laptop" --max-price 800 --json | jq '.[] | {title, price, id}'
 
 - vehicles
 - properties
-- mobiles-tablets
+- mobile-phones-accessories
 - electronics-home-appliances
-- home-furniture-garden
+- home-furniture-decor
 - fashion-beauty
 - pets
 - kids-babies
-- sports-entertainment
+- sports-equipment
 - jobs
 - services
 - business-industrial
