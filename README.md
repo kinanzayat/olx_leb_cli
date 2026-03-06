@@ -1,89 +1,248 @@
-# OLX Lebanon CLI
+# 🇱🇧 OLX Lebanon CLI
 
-A command-line interface for browsing OLX Lebanon listings — optimized for AI agents.
+Browse OLX Lebanon from your terminal — no more endless scrolling through the website!
 
-## Installation
+Perfect for:
+- 🤖 **AI Agents** (Claude, GPT, etc.) — structured JSON output
+- 👨‍💻 **Developers** — automate price tracking, alerts
+- 🛒 **Bargain Hunters** — quickly filter and sort listings
+
+## ⚡ Quick Start
 
 ```bash
-npm install -g olx-leb
-# or
+# Clone and install
+git clone https://github.com/kinanzayat/olx_leb_cli.git
+cd olx_leb_cli
+npm install
+npm link
+
+# Search for iPhones
+olx search "iphone 15"
+
+# Find cars under $20k in Beirut
+olx search "car" --max-price 20000 --location beirut
+```
+
+## 📦 Installation
+
+### Option 1: Clone (Recommended)
+```bash
+git clone https://github.com/kinanzayat/olx_leb_cli.git
+cd olx_leb_cli
+npm install
+npm link  # Makes 'olx' available globally
+```
+
+### Option 2: NPX (No install)
+```bash
 npx olx-leb search "iphone"
 ```
 
-## Usage
-
-### Search Listings
+## 🔍 Search Listings
 
 ```bash
 # Basic search
-olx search "iphone 15"
+olx search "macbook"
 
-# With price filter
-olx search "macbook" --max-price 1000
+# Limit results
+olx search "ps5" --limit 5
 
-# With location
-olx search "car" --location beirut
+# Price range
+olx search "laptop" --min-price 300 --max-price 800
 
-# Sort by price
-olx search "ps5" --sort price-asc
+# Filter by location
+olx search "apartment" --location metn
 
-# JSON output (for agents)
-olx search "apartment" --json
+# Sort by price (cheapest first)
+olx search "iphone" --sort price-asc
+
+# Sort by price (most expensive first)
+olx search "rolex" --sort price-desc
 ```
 
-### View Listing Details
+### Example Output
+```
+🔍 Found 5 listings
+──────────────────────────────────────────────────────────────────────
+
+1. IPhone 15 pro max 256 GB
+   💰 $800
+   📍 Lebanon, Beirut, Achrafieh
+   🕐 3 wk ago
+   🔗 ID: 116739688
+
+2. iPhone 14 Pro 256GB
+   💰 $609
+   📍 Lebanon, Metn, Dekwaneh
+   🕐 1 wk ago
+   🔗 ID: 116190941
+
+──────────────────────────────────────────────────────────────────────
+Use 'olx view <id>' for details
+```
+
+## 📋 View Listing Details
+
+Get full details for any listing using its ID:
 
 ```bash
-# View by ID (from search results)
 olx view 116739688
-
-# JSON output
-olx view 116739688 --json
 ```
 
-### List Categories
+### Example Output
+```
+══════════════════════════════════════════════════════════════════════
+
+📦 IPhone 15 pro max 256 GB
+
+──────────────────────────────────────────────────────────────────────
+💰 Price: $800
+📍 Location: Lebanon, Beirut, Achrafieh
+🕐 Posted: 3 wk ago
+🔗 URL: https://www.olx.com.lb/ad/iphone-15-pro-max-256-gb-ID116739688.html
+
+📋 Details:
+   • Brand: Apple
+   • Color: Silver
+   • Model: 15 Pro Max
+   • Storage: 256 GB
+   • Condition: Used
+
+📝 Description:
+──────────────────────────────────────────────────────────────────────
+phone is like new no scratches and never been opened. BATTERY AT 80%
+
+👤 Seller:
+   imad saade ✅
+
+══════════════════════════════════════════════════════════════════════
+```
+
+## 📂 Categories
 
 ```bash
 olx categories
 ```
 
-## Options
+| Slug | Category |
+|------|----------|
+| `vehicles` | Cars, Motorcycles, Boats |
+| `properties` | Apartments, Houses, Land |
+| `mobile-phones-accessories` | Phones, Tablets, Accessories |
+| `electronics-home-appliances` | TVs, Laptops, Kitchen |
+| `home-furniture-decor` | Furniture, Decor, Garden |
+| `fashion-beauty` | Clothing, Watches, Jewelry |
+| `pets` | Dogs, Cats, Birds |
+| `kids-babies` | Toys, Strollers, Clothing |
+| `sports-equipment` | Gym, Bikes, Outdoors |
+| `jobs` | Job Listings |
+| `services` | Professional Services |
+| `business-industrial` | Equipment, Machinery |
 
-### Search Options
+## 🤖 For AI Agents (Claude, GPT, etc.)
 
-| Option | Description | Example |
-|--------|-------------|---------|
-| `-l, --limit <n>` | Max results (default: 20) | `--limit 50` |
-| `-p, --max-price <n>` | Maximum price in USD | `--max-price 500` |
-| `--min-price <n>` | Minimum price in USD | `--min-price 100` |
-| `-c, --category <slug>` | Category filter | `--category vehicles` |
-| `--location <area>` | Location filter | `--location metn` |
-| `-s, --sort <type>` | Sort: newest, price-asc, price-desc | `--sort price-asc` |
-| `-j, --json` | Output as JSON | `--json` |
-
-## For AI Agents
-
-Use `--json` flag for structured output:
+Use the `--json` flag to get structured output perfect for AI processing:
 
 ```bash
-olx search "laptop" --max-price 800 --json | jq '.[] | {title, price, id}'
+olx search "macbook" --max-price 1000 --json
 ```
 
-## Categories
+### JSON Output
+```json
+[
+  {
+    "id": "116797302",
+    "title": "Macbook pro m3 8/512 ssd",
+    "price": 850,
+    "negotiable": false,
+    "location": "Lebanon, Beirut, Mar Elias",
+    "time": "1 wk ago",
+    "url": "https://www.olx.com.lb/ad/...",
+    "category": "Laptops, Tablets, Computers"
+  }
+]
+```
 
-- vehicles
-- properties
-- mobile-phones-accessories
-- electronics-home-appliances
-- home-furniture-decor
-- fashion-beauty
-- pets
-- kids-babies
-- sports-equipment
-- jobs
-- services
-- business-industrial
+### Teaching Your AI Agent
 
-## License
+Copy this into your agent's instructions:
 
-MIT
+```markdown
+## OLX Lebanon Skill
+
+I can search OLX Lebanon using the `olx` CLI:
+
+**Search:** `olx search "query" --limit 10 --json`
+**View:** `olx view <id> --json`
+**Categories:** `olx categories`
+
+Options:
+- `--max-price <n>` — filter by max price
+- `--min-price <n>` — filter by min price  
+- `--location <area>` — filter by location (beirut, metn, etc.)
+- `--sort price-asc` — cheapest first
+- `--sort price-desc` — most expensive first
+- `--json` — structured output for processing
+```
+
+## 🛠️ All Options
+
+| Option | Short | Description | Default |
+|--------|-------|-------------|---------|
+| `--limit` | `-l` | Max results | 20 |
+| `--max-price` | `-p` | Maximum price (USD) | - |
+| `--min-price` | | Minimum price (USD) | - |
+| `--category` | `-c` | Category slug | - |
+| `--location` | | Location filter | - |
+| `--sort` | `-s` | `newest`, `price-asc`, `price-desc` | newest |
+| `--json` | `-j` | JSON output | false |
+
+## 💡 Tips & Tricks
+
+### Find the Best Deals
+```bash
+# Cheapest iPhones
+olx search "iphone" --sort price-asc --limit 10
+
+# Negotiable items only (check titles)
+olx search "negotiable" --category mobile-phones-accessories
+```
+
+### Location Shortcuts
+```bash
+--location beirut
+--location metn
+--location tripoli
+--location jounieh
+--location saida
+```
+
+### Pipe to Other Tools
+```bash
+# Pretty print with jq
+olx search "car" --json | jq '.[0]'
+
+# Save results
+olx search "apartment" --json > apartments.json
+
+# Count results
+olx search "laptop" --json | jq 'length'
+```
+
+## 🧪 Running Tests
+
+```bash
+npm test
+```
+
+## 📝 License
+
+MIT — use it however you want!
+
+## 🤝 Contributing
+
+PRs welcome! Built by [@kinanzayat](https://github.com/kinanzayat)
+
+---
+
+*No more scrolling through OLX. Just ask.* 🚀
